@@ -1,0 +1,48 @@
+Given the following:
+
+ class Animal
+ {
+    public virtual string speak(int x) { return "silence"; }
+ }
+
+ class Cat : Animal
+ {
+      public string speak(int x) { return "meow"; }
+ }
+
+ class Dog : Animal
+ {
+      public string speak(short x) { return "bow-wow"; }
+ }
+
+Question: Explain why the block below does not emit “bow-wow”:
+          Animal  d = new Dog(); 
+          Console.Write(d.speak(0)); 
+
+Answer: The code outputs "silence" because d.speak(0) invokes the Animal class's speak(int x) method due to method hiding, which is not overridden by Dog's speak(short x).
+
+--------------------------------------
+
+Given the following:
+ class A
+ {
+     public int a { get; set; }
+     public int b { get; set; }
+}
+
+class B
+{
+    public const A a;  
+    public B()  { a.a = 10; }
+}
+
+int main()
+{
+    B b = new B();
+    Console.WriteLine("%d %d\n", b.a.a, b.a.b);
+    return 0;
+}
+
+Question: Outline any issues/concerns with the implemented code.
+
+Answer: The code attempts to modify the a property of a const A object within the B constructor, which is not allowed in C# and will result in a compile-time error. Removing the const keywork will fix the issue.
