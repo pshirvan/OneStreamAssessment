@@ -1,0 +1,91 @@
+﻿<PageTitle>Home</PageTitle>
+
+@page "/"
+<h1 style="text-align: center;">Solution Overview</h1>
+
+<p>
+    This solution demonstrates a microservices-based architecture with ASP.NET Core and Blazor WebAssembly, providing a scalable and modular web application setup.
+    The solution consists of multiple projects that work together to manage data, communicate across services, and provide a user interface.
+</p>
+
+<h2>System Architecture</h2>
+<p>Here’s a breakdown of each project and its role in the system:</p>
+
+<ul>
+    <li>
+        <strong>BlazorFrontend</strong>: A Blazor WebAssembly project that serves as the user-facing frontend application, allowing users to interact with the system to add or retrieve records.
+        It communicates with <strong>FrontendAPI</strong> to manage these operations.
+    </li>
+
+    <li>
+        <strong>FrontendAPI</strong>: An API gateway that acts as a mediator between BlazorFrontend and the backend services (<strong>BackendAPI2</strong> and <strong>BackendAPI3</strong>).
+        This central service handles routing, provides business logic, and manages API calls to the respective backend services.
+    </li>
+
+    <li>
+        <strong>BackendAPI2</strong> and <strong>BackendAPI3</strong>: Independent microservices, each responsible for its own data operations.
+        These services manage data in separate in-memory databases and handle requests routed through FrontendAPI, promoting a modular and scalable architecture.
+    </li>
+</ul>
+
+<h2>Architecture and Operation</h2>
+<p>The system operates through these key workflows:</p>
+
+<ul>
+    <li><strong>Frontend Interaction (BlazorFrontend):</strong> Users interact with the BlazorFrontend application to add new records or view existing ones. BlazorFrontend communicates with FrontendAPI, the gateway for backend services.</li>
+
+    <li><strong>API Gateway (FrontendAPI):</strong> The FrontendAPI routes data and requests, directing calls to BackendAPI2 or BackendAPI3 as needed. It centralizes business logic, making it easy to manage API operations.</li>
+
+    <li><strong>Data Processing and Storage (BackendAPI2 and BackendAPI3):</strong> These backend microservices store and manage their data independently, ensuring separation of concerns and enabling each to handle requests individually.</li>
+</ul>
+
+<h2>System Block Diagram</h2>
+<p style="text-align: center;">The diagram below shows how each project interacts within the architecture.</p>
+
+<div style="text-align: center;">
+    <svg width="600" height="400">
+        <!-- BlazorFrontend -->
+        <rect x="250" y="20" width="100" height="60" style="fill:skyblue;stroke:black;stroke-width:1;" />
+        <text x="255" y="55" font-size="12" font-family="Arial" fill="black">BlazorFrontend</text>
+
+        <!-- FrontendAPI -->
+        <rect x="250" y="120" width="100" height="60" style="fill:lightgreen;stroke:black;stroke-width:1;" />
+        <text x="255" y="155" font-size="12" font-family="Arial" fill="black">FrontendAPI</text>
+
+        <!-- BackendAPI2 -->
+        <rect x="50" y="240" width="100" height="60" style="fill:lightcoral;stroke:black;stroke-width:1;" />
+        <text x="55" y="275" font-size="12" font-family="Arial" fill="black">BackendAPI2</text>
+
+        <!-- BackendAPI3 -->
+        <rect x="450" y="240" width="100" height="60" style="fill:lightcoral;stroke:black;stroke-width:1;" />
+        <text x="455" y="275" font-size="12" font-family="Arial" fill="black">BackendAPI3</text>
+
+        <!-- Arrows from BlazorFrontend to FrontendAPI -->
+        <line x1="300" y1="80" x2="300" y2="120" style="stroke:black;stroke-width:1;" marker-end="url(#arrowhead)" />
+
+        <!-- Arrows from FrontendAPI to BackendAPI2 and BackendAPI3 -->
+        <line x1="300" y1="180" x2="100" y2="240" style="stroke:black;stroke-width:1;" marker-end="url(#arrowhead)" />
+        <line x1="300" y1="180" x2="500" y2="240" style="stroke:black;stroke-width:1;" marker-end="url(#arrowhead)" />
+
+        <!-- Arrowheads -->
+        <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="black" />
+            </marker>
+        </defs>
+
+        <!-- Text Labels for Arrows -->
+        <text x="310" y="100" font-size="10" font-family="Arial" fill="black">HTTP Requests</text>
+        <text x="140" y="210" font-size="10" font-family="Arial" fill="black">Data/Record Management</text>
+        <text x="340" y="210" font-size="10" font-family="Arial" fill="black">Data/Record Management</text>
+    </svg>
+</div>
+
+<h2>Project Roles</h2>
+<ul>
+    <li><strong>BlazorFrontend:</strong> The user interface where users can perform operations such as adding and viewing records.</li>
+    <li><strong>FrontendAPI:</strong> The gateway API that handles user requests and routes them to the appropriate backend service.</li>
+    <li><strong>BackendAPI2 and BackendAPI3:</strong> Microservices that independently manage and store records, providing scalability and separation of concerns.</li>
+</ul>
+
+<p>This documentation provides a high-level view of how the projects within this solution interact, making it easier for new developers and evaluators to understand the architecture and operation of the system.</p>

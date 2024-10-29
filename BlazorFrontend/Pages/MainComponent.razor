@@ -1,0 +1,145 @@
+﻿@page "/data"
+@using BlazorFrontend.Models
+@inject HttpClient Http
+
+<h3>Add Document to Backend APIs</h3>
+
+<EditForm Model="@newDocument" OnValidSubmit="SubmitToBackendAPI2">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label>Name:</label>
+        <InputText class="form-control" @bind-Value="newDocument.Name" />
+    </div>
+
+    <div class="mb-3">
+        <label>Description:</label>
+        <InputText class="form-control" @bind-Value="newDocument.Description" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit to BackendAPI2</button>
+</EditForm>
+
+<EditForm Model="@newDocument" OnValidSubmit="SubmitToBackendAPI3">
+    <button type="submit" class="btn btn-primary">Submit to BackendAPI3</button>
+</EditForm>
+
+<div class="mt-3">Result: @result</div>
+
+<!-- Display Tables Side by Side -->
+<div class="row mt-5">
+    <div class="col-md-6">
+        <h4>Records in BackendAPI2</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var doc in backendAPI2Records)
+                {
+                    <tr>
+                        <td>@doc.Id</td>
+                        <td>@doc.Name</td>
+                        <td>@doc.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-6">
+        <h4>Records in BackendAPI3</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var doc in backendAPI3Records)
+                {
+                    <tr>
+                        <td>@doc.Id</td>
+                        <td>@doc.Name</td>
+                        <td>@doc.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private string result = "";
+    private AppDocument newDocument = new AppDocument();
+    private List<AppDocument> backendAPI2Records = new List<AppDocument>();
+    private List<AppDocument> backendAPI3Records = new List<AppDocument>();
+
+    // Method to submit a record to BackendAPI2 and update records
+    private async Task SubmitToBackendAPI2()
+    {
+        result = "Submitting to BackendAPI2...";
+        var response = await Http.PostAsJsonAsync("api/documents/backend2", newDocument);
+
+        if (response.IsSuccessStatusCode)
+        {
+            result = "Submitted to BackendAPI2";
+            await FetchRecordsFromBackendAPI2(); // Fetch updated records
+        }
+        else
+        {
+            result = $"Failed to submit to BackendAPI2: {response.ReasonPhrase}";
+        }
+    }
+
+    // Method to submit a record to BackendAPI3 and update records
+    private async Task SubmitToBackendAPI3()
+    {
+        result = "Submitting to BackendAPI3...";
+        var response = await Http.PostAsJsonAsync("api/documents/backend3", newDocument);
+
+        if (response.IsSuccessStatusCode)
+        {
+            result = "Submitted to BackendAPI3";
+            await FetchRecordsFromBackendAPI3(); // Fetch updated records
+        }
+        else
+        {
+            result = $"Failed to submit to BackendAPI3: {response.ReasonPhrase}";
+        }
+    }
+
+    // Fetch all records from BackendAPI2
+    private async Task FetchRecordsFromBackendAPI2()
+    {
+        var response = await Http.GetFromJsonAsync<List<AppDocument>>("api/documents/backend2/all");
+        if (response != null)
+        {
+            backendAPI2Records = response;
+        }
+    }
+
+    // Fetch all records from BackendAPI3
+    private async Task FetchRecordsFromBackendAPI3()
+    {
+        var response = await Http.GetFromJsonAsync<List<AppDocument>>("api/documents/backend3/all");
+        if (response != null)
+        {
+            backendAPI3Records = response;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch initial records from both backends on page load
+        await FetchRecordsFromBackendAPI2();
+        await FetchRecordsFromBackendAPI3();
+    }
+}
