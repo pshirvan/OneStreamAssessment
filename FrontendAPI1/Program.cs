@@ -57,7 +57,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors();
-// app.UseAuthentication();  // Uncomment to enable API security
-// app.UseAuthorization();   // Uncomment to enable API security
+app.UseAuthentication();  
+app.UseAuthorization();   
 app.MapControllers();
 app.Run();

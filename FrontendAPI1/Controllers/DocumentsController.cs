@@ -1,5 +1,6 @@
 ﻿using FrontendAPI.Models;
 using FrontendAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace FrontendAPI.Controllers
         }
 
         [HttpGet("backend2/all")]
+        // [Authorize]
         public async Task<IActionResult> GetAllFromBackendAPI2()
         {
             var documents = await _backendService.GetDocumentsFromBackendAPI2();
@@ -24,6 +26,7 @@ namespace FrontendAPI.Controllers
         }
 
         [HttpGet("backend3/all")]
+        // [Authorize]
         public async Task<IActionResult> GetAllFromBackendAPI3()
         {
             var documents = await _backendService.GetDocumentsFromBackendAPI3();
